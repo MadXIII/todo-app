@@ -6,11 +6,16 @@ import (
 
 	"github.com/MadXIII/todo-app/pkg/handler"
 
+	"github.com/MadXIII/todo-app/pkg/repository"
+	"github.com/MadXIII/todo-app/pkg/service"
+
 	"github.com/MadXIII/todo-app"
 )
 
 func main() {
-	handlers := new(handler.Handler)
+	repos := repository.NewRepo()
+	services := service.NewService(repos)
+	handlers := handler.NewHandler(services)
 
 	srv := new(todo.Server)
 	if err := srv.Run("8080", handlers.InitRoutes()); err != nil {
